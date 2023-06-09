@@ -4,10 +4,19 @@
  */
 package model;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 /**
  *
  * @author Gabriel
  */
 public class Pecas {
+    private long rowId;
+    private String nomePeca;
+    private double preco;
+    @ManyToOne
+    @JoinColumn(name = "rowId", referencedColumnName = "rowId")
+    private ModeloCarro modeloCarro;
     
 }
