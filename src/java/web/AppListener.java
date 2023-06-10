@@ -68,7 +68,7 @@ try {
     Connection con = AppListener.getConnection();
     Statement stmt = con.createStatement();
     ResultSet rs = stmt.executeQuery("SELECT * FROM Pecas");
-
+    
     initializeLog += "Recently inserted data:\n";
 
     while (rs.next()) {
@@ -78,6 +78,16 @@ try {
 
         initializeLog += "Nome da Peça: " + nomePeca + ", Preço: " + preco + ", Modelo Carro RowId: " + modeloCarroRowId + "\n";
     }
+    ResultSet rs2 = stmt.executeQuery("SELECT * FROM modeloCarro");
+    
+    while (rs2.next()) {
+    String nomeModelo = rs.getString("nomeModelo");
+    int ano = rs.getInt("ano");
+    String marca = rs.getString("marca");
+
+    initializeLog += "Nome do Modelo: " + nomeModelo + ", Ano: " + ano + ", Marca: " + marca + "\n";
+}
+
 
     rs.close();
     stmt.close();

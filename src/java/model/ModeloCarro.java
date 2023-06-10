@@ -25,7 +25,6 @@ public class ModeloCarro {
     // Getters and setters for the attributes
     public static String getCreateStatement() {
         return "CREATE TABLE IF NOT EXISTS modeloCarro("
-                + "rowId BIGINT PRIMARY KEY,"
                 + "nomeModelo VARCHAR(255),"
                 + "ano DATE,"
                 + "marca VARCHAR(255)"
