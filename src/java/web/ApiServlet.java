@@ -14,6 +14,7 @@ import model.Estoque;
 import model.Filial;
 import model.ModeloCarro;
 import model.Pecas;
+import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,102 +30,102 @@ public class ApiServlet extends HttpServlet {
         return new JSONObject(buffer.toString());
     }
 
-   /*  private void processSession(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    if (request.getMethod().equalsIgnoreCase("PUT")) {
-        JSONObject body = getJSONBody(request.getReader());
-        String login = body.getString("login");
-        String password = body.getString("password");
-        User u = User.getUser(login, password);
-        if (u == null) {
-            response.sendError(403, "Login or password incorrect");
-            file.put("error", "Login or password incorrect");
-        } else {
-            
-            HttpSession session = request.getSession();
-            session.setAttribute("user", u);
-
-            
-            file.put("id", u.getRowId());
-            file.put("login", u.getLogin());
-            file.put("name", u.getNome());
-            file.put("role", u.getCargo());
-            file.put("passwordHash", u.getSenha());
-            file.put("message", "Logged in");
+    private void processSession(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        if(request.getMethod().toLowerCase().equals("put")){
+            JSONObject body = getJSONBody(request.getReader());
+            String login = body.getString("login");
+            String password = body.getString("password");
+            User u = User.getUser(login, password);
+            if(u==null){
+                response.sendError(403, "Login or password incorrects");
+                file.put("error", "Login or password incorrects");
+            }else{
+                request.getSession().setAttribute("user", u);
+                file.put("id", u.getRowId());
+                file.put("login", u.getLogin());
+                file.put("name", u.getName());
+                file.put("role", u.getRole());
+                file.put("passwordHash", u.getPasswordHash());
+                //file.put("parkingHourPrice", Estoque.HOUR_PRICE);
+                file.put("message", "Logged in");
+            }
+        }else if(request.getMethod().toLowerCase().equals("delete")){
+            request.getSession().removeAttribute("user");
+            file.put("message", "Logged out");
+        }else if(request.getMethod().toLowerCase().equals("get")){
+            if(request.getSession().getAttribute("user") == null){
+                response.sendError(403, "No session");
+                file.put("error", "No session");
+            }else{
+                User u = (User) request.getSession().getAttribute("user");
+                file.put("id", u.getRowId());
+                file.put("login", u.getLogin());
+                file.put("name", u.getName());
+                file.put("role", u.getRole());
+                file.put("passwordHash", u.getPasswordHash());
+                //file.put("parkingHourPrice", Estoque.HOUR_PRICE);
+            }
+        }else{
+            response.sendError(405, "Method not allowed");
+            file.put("error", "Method not allowed");
         }
-    } else if (request.getMethod().equalsIgnoreCase("DELETE")) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        file.put("message", "Logged out");
-    } else if (request.getMethod().equalsIgnoreCase("GET")) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendError(403, "No session");
-            file.put("error", "No session");
-        } else {
-            User u = (User) session.getAttribute("user");
-            file.put("id", u.getRowId());
-            file.put("login", u.getLogin());
-            file.put("name", u.getNome());
-            file.put("role", u.getCargo());
-            file.put("passwordHash", u.getSenha());
-        }
-    } else {
-        response.sendError(405, "Method not allowed");
-        file.put("error", "Method not allowed");
     }
-}*/
      
-  /*   private void processUsers(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    HttpSession session = request.getSession();
+     private void processUser(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+  /*  HttpSession session = request.getSession();
     User user = (User) session.getAttribute("user");
 
     if (user == null) {
         response.sendError(401, "Unauthorized: no session");
         file.put("error", "Unauthorized: no session");
-    } else if (!user.getCargo().equals("ADMIN")) {
+    } else if (!user.getRole().equals("ADMIN")) {
         response.sendError(401, "Unauthorized: only admin can manage users");
         file.put("error", "Unauthorized: only admin can manage users");
-    } else if (request.getMethod().equalsIgnoreCase("GET")) {
-        file.put("list", new JSONArray(User.getUsers()));
-    } else if (request.getMethod().equalsIgnoreCase("POST")) {
-        JSONObject body = getJSONBody(request.getReader());
-        String login = body.getString("login");
-        String name = body.getString("name");
-        String role = body.getString("role");
-        String password = body.getString("password");
-        User.insertUser(login, name, role, password);
-    } else if (request.getMethod().equalsIgnoreCase("PUT")) {
-        JSONObject body = getJSONBody(request.getReader());
-        String login = body.getString("login");
-        String name = body.getString("name");
-        String role = body.getString("role");
-        String password = body.getString("password");
-        User.updateUser(login, name, role, password);
-    } else if (request.getMethod().equalsIgnoreCase("DELETE")) {
-        Long id = Long.parseLong(request.getParameter("id"));
-        User.deleteUser(id);
-    } else {
-        response.sendError(405, "Method not allowed");
-        file.put("error", "Method not allowed");
+    } else  if(request.getSession().getAttribute("user")==null){
+            response.sendError(401, "Unauthorized: no session");
+            file.put("error", "Unauthorized: no session");
+        }else if(!((User)request.getSession().getAttribute("user")).getRole().equals("ADMIN")){
+            response.sendError(401, "Unauthorized: only admin can manage users");
+            file.put("error", "Unauthorized: only admin can manage users");
+        }else */if(request.getMethod().toLowerCase().equals("get")){
+            file.put("list", new JSONArray(User.getUsers()));
+        }else if(request.getMethod().toLowerCase().equals("post")){
+            JSONObject body = getJSONBody(request.getReader());
+            String login = body.getString("login");
+            String name = body.getString("name");
+            String role = body.getString("role");
+            String password = body.getString("password");
+            User.insertUser(login, name, role, password);
+        }else if(request.getMethod().toLowerCase().equals("put")){
+            JSONObject body = getJSONBody(request.getReader());
+            String login = body.getString("login");
+            String name = body.getString("name");
+            String role = body.getString("role");
+            String password = body.getString("password");
+            User.updateUser(login, name, role, password);
+        }else if(request.getMethod().toLowerCase().equals("delete")){
+            Long id = Long.parseLong(request.getParameter("id"));
+            User.deleteUser(id);
+        }else{
+            response.sendError(405, "Method not allowed");
+            file.put("error", "Method not allowed");
+        }
     }
-}
-*/
+
      
    
     private void processPeca(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
-       /* User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
         if (user == null) {
             response.sendError(401, "Unauthorized: no session");
             file.put("error", "Unauthorized: no session");
-        } else if (!user.getCargo().equals("ADMIN")) {
+        } else if (!user.getRole().equals("ADMIN")) {
             response.sendError(401, "Unauthorized: only admin can manage peças");
             file.put("error", "Unauthorized: only admin can manage peças");
 
-        } else*/ if (request.getMethod().equalsIgnoreCase("GET")) {
+        } else if (request.getMethod().equalsIgnoreCase("GET")) {
             if (request.getParameter("parameter") != null && !request.getParameter("parameter").isEmpty()) {
                 String parameter = request.getParameter("parameter"); 
 
@@ -161,13 +162,13 @@ public class ApiServlet extends HttpServlet {
     }
 
     private void processModeloCarro(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
-       /* User user = (User) session.getAttribute("user");
+       /* HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
         if (user == null) {
             response.sendError(401, "Unauthorized: no session");
             file.put("error", "Unauthorized: no session");
-        } else if (!user.getCargo().equals("ADMIN")) {
+        } else if (!user.getRole().equals("ADMIN")) {
             response.sendError(401, "Unauthorized: only admin can manage modelos");
             file.put("error", "Unauthorized: only admin can manage modelos"); 
         } else*/ if (request.getMethod().equalsIgnoreCase("GET")) {
@@ -201,7 +202,7 @@ public class ApiServlet extends HttpServlet {
         if (user == null) {
             response.sendError(401, "Unauthorized: no session");
             file.put("error", "Unauthorized: no session");
-        } else if (!user.getCargo().equals("ADMIN")) {
+        } else if (!user.getRole().equals("ADMIN")) {
             response.sendError(401, "Unauthorized: only admin can manage filial");
             file.put("error", "Unauthorized: only admin can manage filial");
         } else if (request.getMethod().equalsIgnoreCase("GET")) {
@@ -230,58 +231,65 @@ public class ApiServlet extends HttpServlet {
         }
     }*/
 
-  /*  private void processEstoque(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
+    private void processEstoque(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+       /* HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
             response.sendError(401, "Unauthorized: no session");
             file.put("error", "Unauthorized: no session");
-        } else if (!user.getCargo().equals("ADMIN")) {
+        } else if (!user.getRole().equals("ADMIN")) {
             response.sendError(401, "Unauthorized: only admin can manage estoque");
             file.put("error", "Unauthorized: only admin can manage estoque");
-        } else if (request.getMethod().equalsIgnoreCase("GET")) {
-            file.put("list", new JSONArray(Estoque.getEstoque()));
-        } else if (request.getMethod().equalsIgnoreCase("POST")) {
+        } else*/    if(request.getMethod().toLowerCase().equals("get"))
+        
+            file.put("list", new JSONArray(Estoque.getEstoques()));
+        
+        else if(request.getMethod().toLowerCase().equals("post")){
             JSONObject body = getJSONBody(request.getReader());
-            long peca = body.getLong("peca");
-            long filial = body.getLong("filial");
-            int qtd = body.getInt("qtd");
-            Estoque.insertEstoque(peca, filial, qtd);
-        } else if (request.getMethod().equalsIgnoreCase("PUT")) {
+            String cdpeca = body.getString("cdpeca");
+            //String nomepeca = body.getString("nomepeca");
+            String filial = body.getString("filial");
+            Integer quantidade = body.getInt("quantidade");
+            Estoque.insertEstoque(cdpeca, filial, quantidade);
+        }
+        else if(request.getMethod().toLowerCase().equals("put")){
             JSONObject body = getJSONBody(request.getReader());
-            long rowId = body.getLong("rowId");
-            long peca = body.getLong("peca");
-            long filial = body.getLong("filial");
-            int qtd = body.getInt("qtd");
-            Estoque.updateEstoque(rowId, peca, filial, qtd);
-        } else if (request.getMethod().equalsIgnoreCase("DELETE")) {
-            Long rowId = Long.parseLong(request.getParameter("rowId"));
-            Estoque.deleteEstoque(rowId);
-        } else {
+            Long rowId = body.getLong("rowid");
+            String cdpeca = body.getString("cdpeca");
+            String nomepeca = body.getString("nomepeca");
+            String filial = body.getString("filial");
+            Integer quantidade = body.getInt("quantidade");
+            Estoque.updateEstoque(rowId,cdpeca, nomepeca, filial, quantidade);
+        }else if(request.getMethod().toLowerCase().equals("delete")){
+            Long id = Long.parseLong(request.getParameter("id"));
+            Estoque.deleteEstoqueline(id);
+        }else{
             response.sendError(405, "Method not allowed");
             file.put("error", "Method not allowed");
         }
     }
     
-    */
+    
      protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
         JSONObject file = new JSONObject();
 
         try {
             if (request.getRequestURI().endsWith("/api/session")) {
-                // processSession(file, request, response);
+                 processSession(file, request, response);
             } else if (request.getRequestURI().endsWith("/api/user")) {
-                //  processUser(file, request, response);
+                  processUser(file, request, response);
             } else if (request.getRequestURI().endsWith("/api/peca")) {
                 processPeca(file, request, response);
             } else if (request.getRequestURI().endsWith("/api/modeloCarro")) {
                 processModeloCarro(file, request, response);
-            /*} else if (request.getRequestURI().endsWith("/api/filial")) {
+            }/* else if (request.getRequestURI().endsWith("/api/filial")) {
                 processFilial(file, request, response);
-            } else if (request.getRequestURI().endsWith("/api/estoque")) { 
-                processEstoque(file, request, response);*/
+            }*/ else if (request.getRequestURI().endsWith("/api/estoque")) { 
+                processEstoque(file, request, response);
+            }  else if(request.getRequestURI().endsWith("/api/index")){
+                processEstoque(file, request, response);
             } else {
                 response.sendError(400, "Invalid URL");
                 file.put("error", "Invalid URL");

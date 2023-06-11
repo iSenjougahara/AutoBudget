@@ -50,7 +50,7 @@ public static final String CLASS_NAME = "org.sqlite.JDBC";
         s.execute(Pecas.getCreateStatement());
         initializeLog += "done; ";
         
-        // ModeloCarro
+        // ModeloCarroo
         initializeLog += "Creating ModeloCarro table...";
         s.execute(ModeloCarro.getCreateStatement());
         initializeLog += "done; ";

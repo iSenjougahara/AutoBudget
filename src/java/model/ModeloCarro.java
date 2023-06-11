@@ -110,7 +110,7 @@ public class ModeloCarro {
     
 
    
-    public static void testGetModeloCarros() {
+  /*  public static void testGetModeloCarros() {
         try {
             ArrayList<ModeloCarro> modeloCarros = getModeloCarros();
             for (ModeloCarro modeloCarro : modeloCarros) {
@@ -123,7 +123,7 @@ public class ModeloCarro {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     // Rest of the class code...
 }
