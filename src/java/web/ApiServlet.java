@@ -277,8 +277,8 @@ public class ApiServlet extends HttpServlet {
             } else if (request.getRequestURI().endsWith("/api/peca")) {
                 processPeca(file, request, response);
             } else if (request.getRequestURI().endsWith("/api/modeloCarro")) {
-         /*       processModeloCarro(file, request, response);
-            } else if (request.getRequestURI().endsWith("/api/filial")) {
+                processModeloCarro(file, request, response);
+            /*} else if (request.getRequestURI().endsWith("/api/filial")) {
                 processFilial(file, request, response);
             } else if (request.getRequestURI().endsWith("/api/estoque")) { 
                 processEstoque(file, request, response);*/

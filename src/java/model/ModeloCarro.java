@@ -107,4 +107,25 @@ public class ModeloCarro {
     public void setMarca(String marca) {
         this.marca = marca;
     }
+    
+
+   
+    public static void testGetModeloCarros() {
+        try {
+            ArrayList<ModeloCarro> modeloCarros = getModeloCarros();
+            for (ModeloCarro modeloCarro : modeloCarros) {
+                System.out.println("Row ID: " + modeloCarro.getRowId());
+                System.out.println("Nome Modelo: " + modeloCarro.getNomeModelo());
+                System.out.println("Ano: " + modeloCarro.getAno());
+                System.out.println("Marca: " + modeloCarro.getMarca());
+                System.out.println();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Rest of the class code...
 }
+
+

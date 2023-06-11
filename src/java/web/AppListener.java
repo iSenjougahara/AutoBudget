@@ -21,6 +21,11 @@ public static final String CLASS_NAME = "org.sqlite.JDBC";
     
     
     
+    
+    
+    
+    
+    
      public static Connection getConnection() throws Exception {
         Class.forName(CLASS_NAME);
         return DriverManager.getConnection(URL);
@@ -32,6 +37,9 @@ public static final String CLASS_NAME = "org.sqlite.JDBC";
     }
     @Override
    public void contextInitialized(ServletContextEvent sce) {
+       
+       
+
     try {
         Connection c = AppListener.getConnection();
         Statement s = c.createStatement();
@@ -103,6 +111,9 @@ initializeLog += "Data fetch completed.\n";
     } catch (Exception ex) {
         initializeLog += "Error: " + ex.getMessage();
     }
+    
+ModeloCarro.testGetModeloCarros();
+
 }
 
     }
